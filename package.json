@@ -1,0 +1,19 @@
+{
+  "name": "epytodo",
+  "version": "1.0.0",
+  "description": "Epitech Project (B-WEB-200), an API for a todo app",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "author": "signaler.epitech.eu",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.7"
+  }
+}
