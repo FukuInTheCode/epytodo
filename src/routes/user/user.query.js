@@ -33,3 +33,8 @@ exports.get_user_by_email = (email, to_call) => {
 exports.update_user_by_id = (id, email, password, name, firstname, to_call) => {
     return to_call(84);
 };
+
+
+exports.delete_user_by_id = (id, to_call) => {
+    return to_call(84);
+};
