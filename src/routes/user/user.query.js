@@ -8,11 +8,18 @@ exports.get_all_user_todos = (email, to_call) => {
     return to_call();
 }
 
-
 exports.check_user_by_id = (id, to_call) => {
     return to_call(84);
 };
 
 exports.get_user_by_id = (id, to_call) => {
+    return to_call();
+};
+
+exports.check_user_by_email = (email, to_call) => {
+    return to_call(84);
+};
+
+exports.get_user_by_email = (email, to_call) => {
     return to_call();
 };
