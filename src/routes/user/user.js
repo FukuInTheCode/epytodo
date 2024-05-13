@@ -26,16 +26,42 @@ module.exports = (app, bcrypt) => {
     });
 
     app.get("/user/:id", auth, (req, res) => {
-        if (!req.user_email) {
-            res.status(500).json({"msg": "Internal server error"});
-            return;
-        }
-        get_user_by_email(req.user_email, (result) => {
-            if (!result) {
+        check_user_by_id(req.body.id, (exist) => {
+            if (exist == 84)
                 res.status(500).json({"msg": "Internal server error"});
                 return;
+            };
+            if (!exist) {
+                res.status(404).json({"msg": "Not found"});
+                return;
             }
-            res.status(200).json(result);
-        })
+            get_user_by_id(req.body.id, (result) => {
+                if (!result) {
+                    res.status(500).json({"msg": "Internal server error"});
+                    return;
+                }
+                res.status(200).json(result);
+            })
+        });
+    });
+
+    app.get("/user/:email", auth, (req, res) => {
+        check_user_by_email(req.body.email, (exist) => {
+            if (exist == 84)
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            };
+            if (!exist) {
+                res.status(404).json({"msg": "Not found"});
+                return;
+            }
+            get_user_by_email(req.body.email, (result) => {
+                if (!result) {
+                    res.status(500).json({"msg": "Internal server error"});
+                    return;
+                }
+                res.status(200).json(result);
+            })
+        });
     });
 }
