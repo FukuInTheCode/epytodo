@@ -13,7 +13,7 @@ module.exports = (app, bcrypt) => {
 
     app.get('/user/todos', auth, (req, res) => {
         if (!req.user_email) {
-            res.status(500).json({"msg"; "Internal server error"});
+            res.status(500).json({"msg": "Internal server error"});
             return;
         }
         get_all_user_todos(req.user_email, (result) => {
@@ -23,5 +23,19 @@ module.exports = (app, bcrypt) => {
             }
             res.status(200).json(result);
         });
+    });
+
+    app.get("/user/:id", auth, (req, res) => {
+        if (!req.user_email) {
+            res.status(500).json({"msg": "Internal server error"});
+            return;
+        }
+        get_user_by_email(req.user_email, (result) => {
+            if (!result) {
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            }
+            res.status(200).json(result);
+        })
     });
 }
