@@ -8,6 +8,20 @@ module.exports = (app, bcrypt) => {
                 return;
             }
             res.status(200).json(result);
-        })
+        });
+    });
+
+    app.get('/user/todos', auth, (req, res) => {
+        if (!req.user_id) {
+            res.status(500).json({"msg"; "Internal server error"});
+            return;
+        }
+        get_all_user_todos(req.user_id, (result) => {
+            if (!result) {
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            }
+            res.status(200).json(result);
+        });
     });
 }
