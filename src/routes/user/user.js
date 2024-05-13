@@ -85,7 +85,7 @@ module.exports = (app, bcrypt) => {
                 return;
             }
             pwd = bcrypt.hashSync(pwd, 10);
-            update_user_by_id(req.params.id, mail, pwd, mname, fname, (err) => {
+            update_user_by_id(req.params.id, email, password, name, firstname, (err) => {
                 if (err == 84) {
                     res.status(500).json({"msg": "Internal server error"});
                     return;
