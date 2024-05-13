@@ -9,10 +9,11 @@ module.exports = (req, res, next) => {
     }
     const token = header.split(' ')[1];
     jwt.verify(token, process.env.SECRET, (err, user) => {
-    if (err) {
-        res.status(498).json({"msg": "Token is not valid"});
-        return;
-    }
-    next();
+        if (err) {
+            res.status(498).json({"msg": "Token is not valid"});
+            return;
+        }
+        req.user_email = user["email"];
+        next();
     });
 };
