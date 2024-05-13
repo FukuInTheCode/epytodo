@@ -100,4 +100,26 @@ module.exports = (app, bcrypt) => {
             });
         });
     });
+
+    app.delete('/user/:id', auth, (req, res) => {
+        const id = req.params.id;
+
+        check_user_by_id(id, (exist) => {
+            if (exist == 84)
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            };
+            if (!exist) {
+                res.status(404).json({"msg": "Not found"});
+                return;
+            }
+            delete_user_by_id(id, (err) => {
+                if (err == 84) {
+                    res.status(500).json({"msg": "Internal server error"});
+                    return;
+                }
+                res.status(200).json({"msg": `Successfully deleted record number: ${id}`})
+            });
+        })
+    });
 }
