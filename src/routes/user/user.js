@@ -27,7 +27,7 @@ module.exports = (app, bcrypt) => {
 
     app.get("/user/:id", auth, (req, res) => {
         check_user_by_id(req.params.id, (exist) => {
-            if (exist == 84)
+            if (exist == 84) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             };
@@ -47,7 +47,7 @@ module.exports = (app, bcrypt) => {
 
     app.get("/user/:email", auth, (req, res) => {
         check_user_by_email(req.params.email, (exist) => {
-            if (exist == 84)
+            if (exist == 84) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             };
@@ -76,7 +76,7 @@ module.exports = (app, bcrypt) => {
             return;
         }
         check_user_by_id(req.params.id, (exist) => {
-            if (exist == 84)
+            if (exist == 84) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             };
@@ -105,7 +105,7 @@ module.exports = (app, bcrypt) => {
         const id = req.params.id;
 
         check_user_by_id(id, (exist) => {
-            if (exist == 84)
+            if (exist == 84) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             };
