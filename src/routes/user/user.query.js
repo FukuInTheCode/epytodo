@@ -15,5 +15,11 @@ exports.check_email = (email, to_call) => {
 };
 
 exports.create_user = (email, firstname, name, password, to_call) => {
+    db.execute("INSERT INTO user (email, firstname, name, password) VALUES (?, ?, ?, ?)", [email, firstname, name, password], (err, result) => {
+        if (err)
+            to_call(84);
+        else
+            to_call(0);
+    });
     return to_call(0);
 };
