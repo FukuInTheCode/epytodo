@@ -5,28 +5,28 @@ module.exports = function(app, bcrypt) {
     app.post("/register", (req, res) => {
         var email = req.body["email"];
         var firstname = req.body["firstname"];
-        var lastname = req.body["lastname"];
+        var name = req.body["name"];
         var password = req.body["password"];
-        if (!email || !firstname || lastname || !password) {
+        if (!email || !firstname || !name || !password) {
             res.status(400).json({msg: "Bad parameter"});
             return;
         }
         check_email(email, (response) => {
             if (response == 84) {
-                res.status(500).json({msg: "Internal server error"});
+                res.status(500).json({"msg": "Internal server error"});
                 return;
             }
             if (response == 0) {
-                res.json({msg: "Account already exists"});
+                res.json({"msg": "Account already exists"});
                 return;
             }
             bcrypt.hasSync(password, 10);
-            create_user(email, firstname, lastname, password, (response) => {
+            create_user(email, firstname, name, password, (response) => {
                 if (response == 84) {
-                    res.status(500).json({msg: "Internal server error"});
+                    res.status(500).json({"msg": "Internal server error"});
                     return;
                 }
-                res.status(200).json({token: jwt.sign({email: email, password: password}, process.env.SECRET)})
+                res.status(200).json({"token": jwt.sign({email: email, password: password}, process.env.SECRET)})
             });
         })
         res
