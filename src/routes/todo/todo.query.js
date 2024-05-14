@@ -47,9 +47,13 @@ exports.update_todo_by_id = (id, title, description, due_time, user_id, status, 
         else
             to_call(0);
     });
-    return to_call(84);
 };
 
 exports.delete_todo_by_id = (id, to_call) => {
-    return to_call(84);
+    db.execute("DELETE FROM todo WHERE id = ?", [id], (err, result) => {
+        if (err)
+            to_call(84);
+        else
+            to_call(0);
+    });
 };
