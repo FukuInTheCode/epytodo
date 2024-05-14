@@ -41,6 +41,12 @@ exports.add_todo = (title, description, due_time, user_id, status, to_call) => {
 };
 
 exports.update_todo_by_id = (id, title, description, due_time, user_id, status, to_call) => {
+    db.query("UPDATE todo SET title = ?, description = ?, due_time = ?, user_id = ?, status = ? WHERE id = ?", [title, description, due_time, user_id, status, id], (err, result) => {
+        if (err)
+            to_call(84);
+        else
+            to_call(0);
+    });
     return to_call(84);
 };
 
