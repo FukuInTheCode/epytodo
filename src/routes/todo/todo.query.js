@@ -1,7 +1,12 @@
 const db = require("../../config/db.js");
 
 exports.get_all_todos = (to_call) => {
-    return to_call();
+    db.query("SELECT * FROM todo", (err, result) => {
+        if (err)
+            to_call(null);
+        else
+            to_call(result);
+    });
 };
 
 exports.check_todo_by_id = (id, to_call) => {
