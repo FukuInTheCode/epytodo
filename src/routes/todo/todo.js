@@ -69,6 +69,14 @@ module.exports = (app) => {
             return;
         }
         check_todo_by_id(req.params.id, (exist) => {
+            if (exist === 84) {
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            }
+            if (!exist) {
+                res.status(404).json({"msg": "Not fount"});
+                return;
+            }
             update_todo_by_id(id, title, desc, due_time, user_id, status, (err) => {
                 if (err === 84) {
                     res.status(500).json({"msg": "Internal server error"});
