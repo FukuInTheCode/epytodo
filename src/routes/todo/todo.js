@@ -30,4 +30,26 @@ module.exports = (app) => {
             });
         })
     });
+
+    app.post("/todos", auth, (req, res) => {
+        const title = req.body["title"];
+        const desc = req.body["description"];
+        const due_time = req.body["due_time"];
+        const user_id = req.body["user_id"];
+        const status = req.body["status"];
+
+        add_todo(title, description, due_time, user_id, status, (id) => {
+            if (id === -1) {
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            }
+            get_todo_by_id(id, (result) => {
+                if (!result) {
+                    res.status(500).json({"msg": "Internal server error"});
+                    return;
+                }
+                res.status(200).json(result);
+            });
+        })
+    });
 };

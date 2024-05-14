@@ -11,3 +11,7 @@ exports.check_todo_by_id = (id, to_call) => {
 exports.get_todo_by_todo = (id, to_call) => {
     return to_call(84);
 };
+
+exports.add_todo = (title, description, due_time, user_id, status, to_call) => {
+    return to_call(-1);
+};
