@@ -21,5 +21,4 @@ exports.create_user = (email, firstname, name, password, to_call) => {
         else
             to_call(0);
     });
-    return to_call(0);
 };
