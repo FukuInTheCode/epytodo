@@ -76,5 +76,11 @@ exports.update_user_by_id = (id, email, password, name, firstname, to_call) => {
 
 
 exports.delete_user_by_id = (id, to_call) => {
+    db.query("DELETE FROM user WHERE id = ?", [id], (err, result) => {
+        if (err)
+            to_call(84);
+        else
+            to_call(0);
+    });
     return to_call(84);
 };
