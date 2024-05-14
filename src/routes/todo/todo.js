@@ -12,7 +12,7 @@ module.exports = (app) => {
     });
 
     app.get("/todos/:id", auth, (req, res) => {
-        check_todo(req.params.id, (exist) => {
+        check_todo_by_id(req.params.id, (exist) => {
             if (exist === 84) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
