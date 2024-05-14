@@ -66,7 +66,12 @@ exports.get_user_by_email = (email, to_call) => {
 
 
 exports.update_user_by_id = (id, email, password, name, firstname, to_call) => {
-    return to_call(84);
+    db.query("UPDATE user SET email = ?, firstname = ?, name = ?, password = ? WHERE id = ?", [email, firstname, name, password, id], (err, result) => {
+        if (err)
+            to_call(84);
+        else
+            to_call(0);
+    });
 };
 
 
