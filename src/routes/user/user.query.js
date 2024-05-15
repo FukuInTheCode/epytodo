@@ -107,4 +107,5 @@ exports.get_mail_account = function(res, mail, pwd, bcrypt, callback) {
         } else {
             callback(84);
         }
-
+    })
+};
