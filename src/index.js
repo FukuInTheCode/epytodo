@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv").config({path: "../.env"});
+const dotenv = require("dotenv").config();
 var bcrypt = require('bcryptjs');
 const app = express()
 app.use(express.json());

@@ -1,4 +1,4 @@
-const { check_email, create_user, get_mail_account } = require("../user/user.query.js");
+const { check_user_by_email, create_user, get_mail_account } = require("../user/user.query.js");
 const jwt = require("jsonwebtoken");
 
 module.exports = function(app, bcrypt) {
@@ -6,7 +6,7 @@ module.exports = function(app, bcrypt) {
         var mail = req.body["email"];
 
         if (mail === undefined || req.body["password"] === undefined) {
-            res.status(500).json({"msg":"internal server error"});
+            res.status(500).json({"msg":"Internal server error"});
             return;
         }
         get_mail_account(res, mail, req.body["password"], bcrypt, function(nbr) {
@@ -26,16 +26,16 @@ module.exports = function(app, bcrypt) {
             res.status(400).json({msg: "Bad parameter"});
             return;
         }
-        check_email(email, (response) => {
+        check_user_by_email(email, (response) => {
             if (response == 84) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             }
-            if (response == 0) {
+            if (response == 1) {
                 res.json({"msg": "Account already exists"});
                 return;
             }
-            bcrypt.hasSync(password, 10);
+            bcrypt.hashSync(password, 10);
             create_user(email, firstname, name, password, (response) => {
                 if (response == 84) {
                     res.status(500).json({"msg": "Internal server error"});

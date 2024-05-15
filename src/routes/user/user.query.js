@@ -1,7 +1,7 @@
 const db = require("../../config/db.js");
 
 exports.get_all_users = (to_call) => {
-    db.query("SELECT id, email, password, created_at, firstname, name FROM user", (err, result) => {
+    db.query("SELECT id, email, password, created_at, firstname, name FROM epytodo.user", (err, result) => {
         if (err)
             to_call(null);
         else
@@ -10,7 +10,7 @@ exports.get_all_users = (to_call) => {
 }
 
 exports.get_all_user_todos = (email, to_call) => {
-    db.query("SELECT * FROM todo WHERE user_id = (SELECT id FROM user WHERE email = ?)", [email], (err, result) => {
+    db.query("SELECT * FROM epytodo.todo WHERE user_id = (SELECT id FROM epytodo.user WHERE email = ?)", [email], (err, result) => {
         if (err)
             to_call(undefined);
         else
@@ -19,7 +19,7 @@ exports.get_all_user_todos = (email, to_call) => {
 }
 
 exports.check_user_by_id = (id, to_call) => {
-    db.query("SELECT COUNT(*) AS count FROM user WHERE id = ?", [id], (err, result) => {
+    db.query("SELECT COUNT(*) AS count FROM epytodo.user WHERE id = ?", [id], (err, result) => {
         if (err)
             to_call(84);
         else {
@@ -33,7 +33,7 @@ exports.check_user_by_id = (id, to_call) => {
 };
 
 exports.get_user_by_id = (id, to_call) => {
-    db.query("SELECT * FROM user WHERE id = ?", [id], (err, result) => {
+    db.query("SELECT * FROM epytodo.user WHERE id = ?", [id], (err, result) => {
         if (err)
             to_call(undefined);
         else
@@ -42,10 +42,11 @@ exports.get_user_by_id = (id, to_call) => {
 };
 
 exports.check_user_by_email = (email, to_call) => {
-    db.query("SELECT COUNT(*) AS count FROM user WHERE email = ?", [email], (err, result) => {
-        if (err)
+    db.query("SELECT COUNT(*) AS count FROM epytodo.user WHERE email = ?", [email], (err, result) => {
+        if (err) {
+            console.log(err);
             to_call(84);
-        else {
+         } else {
             const count = result[0].count;
             if (count > 0)
                 to_call(1);
@@ -56,7 +57,7 @@ exports.check_user_by_email = (email, to_call) => {
 };
 
 exports.get_user_by_email = (email, to_call) => {
-    db.query("SELECT * FROM user WHERE email = ?", [email], (err, result) => {
+    db.query("SELECT * FROM epytodo.user WHERE email = ?", [email], (err, result) => {
         if (err)
             to_call(undefined);
         else
@@ -66,7 +67,7 @@ exports.get_user_by_email = (email, to_call) => {
 
 
 exports.update_user_by_id = (id, email, password, name, firstname, to_call) => {
-    db.query("UPDATE user SET email = ?, firstname = ?, name = ?, password = ? WHERE id = ?", [email, firstname, name, password, id], (err, result) => {
+    db.query("UPDATE epytodo.user SET email = ?, firstname = ?, name = ?, password = ? WHERE id = ?", [email, firstname, name, password, id], (err, result) => {
         if (err)
             to_call(84);
         else
@@ -76,7 +77,7 @@ exports.update_user_by_id = (id, email, password, name, firstname, to_call) => {
 
 
 exports.delete_user_by_id = (id, to_call) => {
-    db.query("DELETE FROM user WHERE id = ?", [id], (err, result) => {
+    db.query("DELETE FROM epytodo.user WHERE id = ?", [id], (err, result) => {
         if (err)
             to_call(84);
         else
@@ -85,7 +86,7 @@ exports.delete_user_by_id = (id, to_call) => {
 };
 
 exports.create_user = (email, firstname, name, password, to_call) => {
-    db.execute("INSERT INTO user (email, firstname, name, password) VALUES (?, ?, ?, ?)", [email, firstname, name, password], (err, result) => {
+    db.execute("INSERT INTO epytodo.user (email, firstname, name, password) VALUES (?, ?, ?, ?)", [email, firstname, name, password], (err, result) => {
         if (err)
             to_call(84);
         else
@@ -94,18 +95,17 @@ exports.create_user = (email, firstname, name, password, to_call) => {
 };
 
 exports.get_mail_account = function(res, mail, pwd, bcrypt, callback) {
-    db.execute('SELECT password FROM `user` WHERE email = ?', [mail], function(err, results, fields) {
-        if (results.length > 0) {
-            var pwd2 = results[0].password;
-            if (bcrypt.compareSync(pwd, pwd2)) {
-                const token = jwt.sign({email:mail, password:password}, 'SECRET');
-                res.json({token});
-                callback(0);
-            } else {
-                callback(84);
-            }
+    db.execute('SELECT password FROM `epytodo.user` WHERE email = ?', [mail], function(err, results, fields) {
+        console.log(results);
+        var pwd2 = results[0].password;
+        if (!pwd2)
+            return callback(84);
+        if (bcrypt.compareSync(pwd, pwd2)) {
+            const token = jwt.sign({email:mail, password:password}, 'SECRET');
+            res.json({token});
+            callback(0);
         } else {
             callback(84);
         }
-    })
+    });
 };
