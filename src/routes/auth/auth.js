@@ -1,7 +1,22 @@
-const { check_email, create_user } = require("../user/user.query.js");
+const { check_email, create_user, get_mail_account } = require("../user/user.query.js");
 const jwt = require("jsonwebtoken");
 
 module.exports = function(app, bcrypt) {
+    app.post('/login', (req, res) => {
+        var mail = req.body["email"];
+
+        if (mail === undefined || req.body["password"] === undefined) {
+            res.status(500).json({"msg":"internal server error"});
+            return;
+        }
+        get_mail_account(res, mail, req.body["password"], bcrypt, function(nbr) {
+            if (nbr == 84) {
+                res.status(401).json({"msg":"Invalid Credentials"});
+            }
+            return;
+        });
+    });
+
     app.post("/register", (req, res) => {
         var email = req.body["email"];
         var firstname = req.body["firstname"];
