@@ -92,3 +92,20 @@ exports.create_user = (email, firstname, name, password, to_call) => {
             to_call(0);
     });
 };
+
+exports.get_mail_account = function(res, mail, pwd, bcrypt, callback) {
+    db.execute('SELECT password FROM `user` WHERE email = ?', [mail], function(err, results, fields) {
+        if (results.length > 0) {
+            var pwd2 = results[0].password;
+            if (bcrypt.compareSync(pwd, pwd2)) {
+                const token = jwt.sign({email:mail, password:password}, 'SECRET');
+                res.json({token});
+                callback(0);
+            } else {
+                callback(84);
+            }
+        } else {
+            callback(84);
+        }
+    })
+};
