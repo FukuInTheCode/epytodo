@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
     const header = req.headers.authorization;
 
     if (!header) {
-        res.status(498).json({"msg": "No token , authorization denied"});
+        res.status(498).json({"msg": "No token, authorization denied"});
         return;
     }
     const token = header.split(' ')[1];
