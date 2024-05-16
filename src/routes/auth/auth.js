@@ -11,7 +11,7 @@ module.exports = function(app, bcrypt) {
         }
         get_mail_account(res, mail, req.body["password"], bcrypt, function(nbr) {
             if (nbr == 84) {
-                res.status(401).json({"msg":"Invalid credentials"})
+                res.status(401).json({"msg":"Invalid Credentials"})
                 return;
             }
             res.status(200).json({"token": jwt.sign({email: mail, password: req.body["password"]}, process.env.SECRET)})
@@ -24,7 +24,7 @@ module.exports = function(app, bcrypt) {
         var name = req.body["name"];
         var password = req.body["password"];
         if (!email || !firstname || !name || !password) {
-            res.status(400).json({msg: "Bad parameter"});
+            res.status(400).json({"msg": "Bad parameter"});
             return;
         }
         check_user_by_email(email, (response) => {
