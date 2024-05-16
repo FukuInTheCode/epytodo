@@ -44,7 +44,6 @@ exports.get_user_by_id = (id, to_call) => {
 exports.check_user_by_email = (email, to_call) => {
     db.query("SELECT COUNT(*) AS count FROM epytodo.user WHERE email = ?", [email], (err, result) => {
         if (err) {
-            console.log(err);
             to_call(84);
          } else {
             const count = result[0].count;
@@ -95,14 +94,15 @@ exports.create_user = (email, firstname, name, password, to_call) => {
 };
 
 exports.get_mail_account = function(res, mail, pwd, bcrypt, callback) {
-    db.execute('SELECT password FROM `epytodo.user` WHERE email = ?', [mail], function(err, results, fields) {
-        console.log(results);
+    db.execute('SELECT password FROM epytodo.user WHERE email = ?', [mail], function(err, results, fields) {
+        if (err)
+            return callback(84);
+        if (!results || results.length <= 0)
+            return callback(84);
         var pwd2 = results[0].password;
         if (!pwd2)
             return callback(84);
         if (bcrypt.compareSync(pwd, pwd2)) {
-            const token = jwt.sign({email:mail, password:password}, 'SECRET');
-            res.json({token});
             callback(0);
         } else {
             callback(84);
