@@ -42,7 +42,7 @@ module.exports = function(app, bcrypt) {
                     res.status(500).json({"msg": "Internal server error"});
                     return;
                 }
-                res.status(200).json({"token": jwt.sign({email: email, password: password}, process.env.SECRET)})
+                res.status(201).json({"token": jwt.sign({email: email, password: password}, process.env.SECRET)})
             });
         })
         res
