@@ -1,6 +1,6 @@
 const { check_user_by_email, create_user, get_mail_account } = require("../user/user.query.js");
 const jwt = require("jsonwebtoken");
-function isValidEmail(email: string) {
+function is_validMail(email) {
   return email
       .toLowerCase()
       .match(

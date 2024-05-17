@@ -10,7 +10,7 @@ module.exports = (app, bcrypt) => {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             }
-            res.status(200).json(result);
+            res.status(200).json(result[0]);
         });
     });
 
@@ -47,7 +47,7 @@ module.exports = (app, bcrypt) => {
                     res.status(500).json({"msg": "Internal server error"});
                     return;
                 }
-                res.status(200).json(result);
+                res.status(200).json(result[0]);
             })
         });
     });
@@ -67,7 +67,7 @@ module.exports = (app, bcrypt) => {
                     res.status(500).json({"msg": "Internal server error"});
                     return;
                 }
-                res.status(200).json(result);
+                res.status(200).json(result[0]);
             })
         });
     });
@@ -79,7 +79,7 @@ module.exports = (app, bcrypt) => {
         let password = req.body["password"];
 
         if (!email || !firstname || !name || !password) {
-            res.status(498).json({"msg": "Bad parameter"});
+            res.status(400).json({"msg": "Bad parameter"});
             return;
         }
         check_user_by_id(req.params.id, (exist) => {
@@ -102,7 +102,7 @@ module.exports = (app, bcrypt) => {
                         res.status(500).json({"msg": "Internal server error"});
                         return;
                     }
-                    res.status(200).json(result);
+                    res.status(200).json(result[0]);
                 });
             });
         });
