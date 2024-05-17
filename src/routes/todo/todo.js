@@ -1,4 +1,7 @@
 const auth = require("../../middlewares/auth.js");
+function isValidStatus(status) {
+    return status.match(/^(not started|todo|in progress|done)$/);
+}
 
 module.exports = (app) => {
     app.get("/todos", auth, (req, res) => {
@@ -26,7 +29,7 @@ module.exports = (app) => {
                     res.status(500).json({"msg": "Internal server error"});
                     return;
                 }
-                res.status(200).json(result);
+                res.status(200).json(result[0]);
             });
         })
     });
@@ -38,7 +41,7 @@ module.exports = (app) => {
         const user_id = req.body["user_id"];
         const status = req.body["status"];
 
-        if (!title || !desc || !due_time || !user_id || !status) {
+        if (!title || !desc || !due_time || !user_id || !status || !isValidStatus(status)) {
             res.status(498).json({"msg": "Bad parameter"});
             return;
         }
@@ -52,7 +55,7 @@ module.exports = (app) => {
                     res.status(500).json({"msg": "Internal server error"});
                     return;
                 }
-                res.status(200).json(result);
+                res.status(200).json(result[0]);
             });
         })
     });
@@ -64,7 +67,7 @@ module.exports = (app) => {
         const user_id = req.body["user_id"];
         const status = req.body["status"];
 
-        if (!title || !desc || !due_time || !user_id || !status) {
+        if (!title || !desc || !due_time || !user_id || !status || !isValidStatus(status)) {
             res.status(498).json({"msg": "Bad parameter"});
             return;
         }
