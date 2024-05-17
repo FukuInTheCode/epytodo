@@ -1,3 +1,4 @@
+const { get_all_todos, check_todo_by_id, get_todo_by_id, add_todo, update_todo_by_id, delete_todo_by_id } = require("./todo.query.js");
 const auth = require("../../middlewares/auth.js");
 function isValidStatus(status) {
     return status.match(/^(not started|todo|in progress|done)$/);
@@ -86,6 +87,28 @@ module.exports = (app) => {
                     return;
                 }
                 res.status(200).json({"title": title, "description": desc, "due_time": due_time, "user_id": user_id, "status": status});
+            });
+        })
+    });
+
+    app.delete('/todos/:id', auth, (req, res) => {
+        const id = req.params.id;
+
+        check_todo_by_id(id, (exist) => {
+            if (exist === 84) {
+                res.status(500).json({"msg": "Internal server error"});
+                return;
+            }
+            if (!exist) {
+                res.status(404).json({"msg": "Not found"});
+                return;
+            }
+            delete_todo_by_id(id, (err) => {
+                if (err === 84) {
+                    res.status(500).json({"msg": "Internal server error"});
+                    return;
+                }
+                res.status(200).json({"msg": `Successfully deleted record number: ${id}`});
             });
         })
     });
