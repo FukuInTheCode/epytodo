@@ -5,7 +5,7 @@ const {get_all_user_todos, check_user_by_id, check_user_by_email, get_user_by_id
 
 module.exports = (app, bcrypt) => {
     app.get("/user", auth, (req, res) => {
-        get_all_users((result) => {
+        get_user_by_email(req.user_email, (result) => {
             if (!result) {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
@@ -14,7 +14,7 @@ module.exports = (app, bcrypt) => {
         });
     });
 
-    app.get('/user/todos', auth, (req, res) => {
+    app.get("/user/todos", auth, (req, res) => {
         if (!req.user_email) {
             res.status(500).json({"msg": "Internal server error"});
             return;
@@ -24,11 +24,15 @@ module.exports = (app, bcrypt) => {
                 res.status(500).json({"msg": "Internal server error"});
                 return;
             }
+            if (result.length == 0) {
+                res.status(404).json({"msg": "Not found"});
+                return;
+            }
             res.status(200).json(result);
         });
     });
 
-    app.get("/user/:id", auth, (req, res) => {
+    app.get("/users/:id", auth, (req, res) => {
         check_user_by_id(req.params.id, (exist) => {
             if (exist === 84) {
                 res.status(500).json({"msg": "Internal server error"});
@@ -48,7 +52,7 @@ module.exports = (app, bcrypt) => {
         });
     });
 
-    app.get("/user/:email", auth, (req, res) => {
+    app.get("/users/:email", auth, (req, res) => {
         check_user_by_email(req.params.email, (exist) => {
             if (exist === 84) {
                 res.status(500).json({"msg": "Internal server error"});
@@ -68,7 +72,7 @@ module.exports = (app, bcrypt) => {
         });
     });
 
-    app.put("/user/:id", auth, (req, res) => {
+    app.put("/users/:id", auth, (req, res) => {
         const email = req.body["email"];
         const firstname = req.body["firstname"];
         const name = req.body["name"];
@@ -104,7 +108,7 @@ module.exports = (app, bcrypt) => {
         });
     });
 
-    app.delete('/user/:id', auth, (req, res) => {
+    app.delete('/users/:id', auth, (req, res) => {
         const id = req.params.id;
 
         check_user_by_id(id, (exist) => {
