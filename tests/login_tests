@@ -1,0 +1,2 @@
+curl localhost:3000/login -X POST  -H "Content-Type: application/json" -d '{"email": "caca@epitech.eu", "password": "1234"}'
+

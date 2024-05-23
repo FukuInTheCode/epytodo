@@ -1,0 +1,2 @@
+curl localhost:3000/register -X POST  -H "Content-Type: application/json" -d '{"email": "caca@eepitech.eu", "na, "password": "caca"}'
+
